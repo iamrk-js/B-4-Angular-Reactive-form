@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CountriesService } from './shared/services/countries.service';
 import { CustomRegex } from './validation-regax';
 
@@ -13,12 +13,13 @@ export class AppComponent implements OnInit {
   title = 'reactiveForm';
   signUpForm !: FormGroup;
   gendersArray: string[] = ["Female", "Male", "Others"]
-  countryNames  : string[] = []
-  constructor(private countryService : CountriesService) {
+  countryNames: string[] = []
+  constructor(private countryService: CountriesService) {
 
   }
   ngOnInit(): void {
-    this.countryNames = this.countryService.getAllConuntryNames()
+    this.countryNames = this.countryService.getAllConuntryNames();
+    this.onSkillAdd();
     this.signUpForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.email)]),
@@ -28,18 +29,23 @@ export class AppComponent implements OnInit {
         state: new FormControl(null, Validators.required),
         city: new FormControl(null, Validators.required),
         zipcode: new FormControl(null, Validators.required)
-      })
+      }),
+      skills: new FormArray([])
     })
   }
 
   onSignUp() {
     console.log(this.signUpForm);
   }
-  get f(){
+  onSkillAdd(){
+    let control = new FormControl(null, [Validators.required])
+    this.skillsArray?.push(control);
+  }
+  get f() {
     return this.signUpForm.controls;
   }
   get userNameControl() {
-    return this.signUpForm?.get('username') ;
+    return this.signUpForm?.get('username');
   }
   get emailControl() {
     return this.signUpForm?.get('email') as FormControl;
@@ -56,5 +62,8 @@ export class AppComponent implements OnInit {
   }
   get zipcodeControl() {
     return this.signUpForm?.get('address')?.get('zipcode') as FormControl;
+  }
+  get skillsArray(){
+    return this.signUpForm?.get('skills') as FormArray
   }
 }

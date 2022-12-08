@@ -77,6 +77,14 @@
             </div>
           </div>
         </div>
+        <div class="row" formArrayName="skills">
+          <div class="col-sm-12">
+            <div class="form-group" *ngFor="let skill of skillsArray?.controls; let i = index">
+              <input type="text" name="" [formControlName]="i" class="form-control">
+            </div>
+            <button class="btn btn-success mb-4" (click)="onSkillAdd()">Add Skills</button>
+          </div>
+        </div>
         <div class="form-group">
           <button class="btn btn-primary" type="submit">
             Sign Up
