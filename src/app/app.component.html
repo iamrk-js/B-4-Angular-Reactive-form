@@ -6,11 +6,11 @@
           <label for="username">Username*</label>
           <input type="text" minlength="5" [formControlName]="'username'" id="" class="form-control">
 
-          <p *ngIf="userNameControl?.invalid && userNameControl?.touched">
+          <p *ngIf="f['username'].invalid && userNameControl?.touched">
             <span *ngIf="userNameControl?.errors?.['required'] ">
               Username is required.
             </span>
-            <span *ngIf="userNameControl?.errors?.['minlength'] ">
+            <span *ngIf="f['username'].errors?.['minlength'] ">
               Minimum Length should be {{userNameControl?.errors?.['minlength']?.requiredLength}}
             </span>
           </p>
@@ -97,6 +97,14 @@
                 Skills</button>
             </div>
           </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" name="password" formControlName="password" id="password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">confirm Password</label>
+          <input type="text" name="confirmPassword" formControlName="confirmPassword" id="confirmPassword" class="form-control">
         </div>
         <div class="form-group">
           <button class="btn btn-primary" type="submit">

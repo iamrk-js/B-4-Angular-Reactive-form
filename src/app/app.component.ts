@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CountriesService } from './shared/services/countries.service';
 import { CustomRegex } from './validation-regax';
 
+export enum  genders {MALE = "male", FEMALE = "female", OTHERS = "others"};
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
 
   title = 'reactiveForm';
   signUpForm !: FormGroup;
-  gendersArray: string[] = ["Female", "Male", "Others"]
+  gendersArray: string[] = [genders.FEMALE, genders.MALE, genders.OTHERS]
   countryNames: string[] = []
   constructor(private countryService: CountriesService) {
 
@@ -30,7 +31,9 @@ export class AppComponent implements OnInit {
         city: new FormControl(null, Validators.required),
         zipcode: new FormControl(null, Validators.required)
       }),
-      skills: new FormArray([new FormControl(null, Validators.required)])
+      skills: new FormArray([new FormControl(null, Validators.required)]),
+      password : new FormControl(null, [Validators.required]),
+      confirmPassword : new FormControl(null, [Validators.required]),
     })
   }
 
