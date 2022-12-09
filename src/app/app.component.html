@@ -11,7 +11,7 @@
               Username is required.
             </span>
             <span *ngIf="userNameControl?.errors?.['minlength'] ">
-             Minimum Length should be {{userNameControl?.errors?.['minlength']?.requiredLength}}
+              Minimum Length should be {{userNameControl?.errors?.['minlength']?.requiredLength}}
             </span>
           </p>
 
@@ -19,7 +19,8 @@
         <div class="form-group">
           <label for="email">email*</label>
           <input type="text" formControlName="email" id="" class="form-control">
-          <span *ngIf="emailControl.touched && emailControl?.invalid">This is required field</span>
+          <!-- <span *ngIf="emailControl.touched && emailControl?.invalid">This is required field</span> -->
+          <span *ngIf=" f['email'].touched && f['email'].invalid">This is required field</span>
         </div>
         <div class="form-group">
           <ng-container *ngFor="let genderName of gendersArray">
@@ -77,12 +78,24 @@
             </div>
           </div>
         </div>
-        <div class="row" formArrayName="skills">
-          <div class="col-sm-12">
-            <div class="form-group" *ngFor="let skill of skillsArray?.controls; let i = index">
-              <input type="text" name="" [formControlName]="i" class="form-control">
+        <div formArrayName="skills">
+          <div class="row" *ngFor="let skill of skillsArray?.controls; let i = index">
+            <div class="col-sm-10">
+              <div class="form-group" >
+                <input type="text" name="" [formControlName]="i" class="form-control">
+              </div>
             </div>
-            <button class="btn btn-success mb-4" (click)="onSkillAdd()">Add Skills</button>
+            <div class="col-sm-2 " *ngIf="i > 0">
+              <a href="javascript:;" (click)="onSkillRemove(i)">
+                <i class="fa-solid fa-trash fa-2x"></i>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-success mb-4" [disabled]="skillsArray.length >= 5" (click)="onSkillAdd()">Add
+                Skills</button>
+            </div>
           </div>
         </div>
         <div class="form-group">

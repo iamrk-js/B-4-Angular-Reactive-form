@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
         city: new FormControl(null, Validators.required),
         zipcode: new FormControl(null, Validators.required)
       }),
-      skills: new FormArray([])
+      skills: new FormArray([new FormControl(null, Validators.required)])
     })
   }
 
@@ -40,6 +40,9 @@ export class AppComponent implements OnInit {
   onSkillAdd(){
     let control = new FormControl(null, [Validators.required])
     this.skillsArray?.push(control);
+  }
+  onSkillRemove(index:number){
+    this.skillsArray.removeAt(index)
   }
   get f() {
     return this.signUpForm.controls;
