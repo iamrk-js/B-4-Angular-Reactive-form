@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { genders } from './shared/constants/genders';
 import { CountriesService } from './shared/services/countries.service';
+import { EmplIdValidtors } from './shared/validations/emplIdValidator';
+import { SpaceValidator } from './shared/validations/spaceValidator';
 import { CustomRegex } from './validation-regax';
 
-export enum  genders {MALE = "male", FEMALE = "female", OTHERS = "others"};
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,7 +24,8 @@ export class AppComponent implements OnInit {
     this.countryNames = this.countryService.getAllConuntryNames();
     this.onSkillAdd();
     this.signUpForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required, SpaceValidator.noSpaceValidation]),
+      employeeId : new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4), EmplIdValidtors.idValidate]),
       email: new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.email)]),
       gender: new FormControl(null),
       address: new FormGroup({
@@ -32,8 +35,8 @@ export class AppComponent implements OnInit {
         zipcode: new FormControl(null, Validators.required)
       }),
       skills: new FormArray([new FormControl(null, Validators.required)]),
-      password : new FormControl(null, [Validators.required]),
-      confirmPassword : new FormControl(null, [Validators.required]),
+      password : new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      confirmPassword : new FormControl(null, [Validators.required, Validators.minLength(8)]),
     })
   }
 
