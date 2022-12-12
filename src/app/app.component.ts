@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { genders } from './shared/constants/genders';
 import { CountriesService } from './shared/services/countries.service';
+import { AsyncIsEmailExist } from './shared/validations/asyncEmailvalidate';
 import { EmplIdValidtors } from './shared/validations/emplIdValidator';
 import { passwordMatch } from './shared/validations/passwordMatch';
 import { SpaceValidator } from './shared/validations/spaceValidator';
@@ -40,7 +41,7 @@ export class AppComponent implements OnInit {
     this.signUpForm = new FormGroup({
       username: new FormControl('', [Validators.required, SpaceValidator.noSpaceValidation]),
       employeeId: new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4), EmplIdValidtors.idValidate]),
-      email: new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.email)]),
+      email: new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.email)],[AsyncIsEmailExist.forbiddenEmail]),
       gender: new FormControl(null),
       address: new FormGroup({
         country: new FormControl(null, Validators.required),

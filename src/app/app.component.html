@@ -15,8 +15,12 @@
                 <span *ngIf="f['username'].errors?.['minlength'] ">
                   Minimum Length should be {{userNameControl?.errors?.['minlength']?.requiredLength}}
                 </span>
-                <span *ngIf="f['username'].errors?.['']">
-
+                
+              </p>
+              
+              <p *ngIf="f['username'].invalid && userNameControl?.dirty">
+                <span *ngIf="f['username'].hasError('noSpaceError')">
+                  {{userNameControl?.errors?.['noSpaceError']}}
                 </span>
               </p>
 
@@ -27,8 +31,10 @@
             <div class="form-group">
               <label for="email">email*</label>
               <input type="text" formControlName="email" id="" class="form-control">
+              
               <!-- <span *ngIf="emailControl.touched && emailControl?.invalid">This is required field</span> -->
               <span *ngIf=" f['email'].touched && f['email'].invalid">This is required field</span>
+              
             </div>
           </div>
           <div class="col-md-3">
@@ -80,7 +86,7 @@
                   <label for="country">Country* </label>
                   <!-- <input type="text" formControlName="country" id="country" class="form-control"> -->
                   <select name="" id="country" formControlName="country" class="form-control">
-                    <option value="">Select Country Name</option>
+                    <option [ngValue]="null">Select Country Name</option>
                     <option [value]="country" *ngFor="let country of countryNames">
                       {{country}}
                     </option>
