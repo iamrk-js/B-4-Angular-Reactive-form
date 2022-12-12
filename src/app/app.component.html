@@ -39,7 +39,7 @@
                 <span *ngIf="f['employeeId'].hasError('required')">
                   EmployeeId is Required field
                 </span>
-             
+
               </ng-container>
               <ng-container *ngIf="f['employeeId'].dirty && f['employeeId'].invalid">
                 <span *ngIf="f['employeeId'].hasError('minlength')">
@@ -50,9 +50,9 @@
                 </span>
                 <span *ngIf="f['employeeId'].hasError('invalidid')">
                   1 string 3 number
-                 </span>
+                </span>
               </ng-container>
-              
+
             </div>
           </div>
         </div>
@@ -155,10 +155,10 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="confirmPassword">confirm Password</label>
-              <input type="text" name="confirmPassword" formControlName="confirmPassword" id="confirmPassword"
+              <input type="text"  name="confirmPassword" formControlName="confirmPassword" id="confirmPassword"
                 class="form-control">
-              <ng-container *ngIf="f['confirmPassword'].touched && 
-              f['confirmPassword'].value !== f['password'].value">
+              <ng-container *ngIf="signUpForm?.errors?.['passwordMismatcgError'] && 
+              f['confirmPassword'].touched">
                 <span>
                   Password and Confirm password both should be same
                 </span>
@@ -172,8 +172,7 @@
 
         </div>
         <div class="form-group">
-          <button class="btn btn-primary"
-             type="submit">
+          <button class="btn btn-primary" type="submit">
             Sign Up
           </button>
         </div>
