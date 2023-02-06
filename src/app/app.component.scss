@@ -2,5 +2,15 @@ input, select, textarea {
     &.ng-invalid.ng-touched{
         border: 2px solid red !important;
     }
+    &.ng-invalid.ng-dirty{
+        border: 2px solid red !important;
+    }
+}
+span{
+    display: block;
 }
 
+
+// [class^="col"]{
+
+// }

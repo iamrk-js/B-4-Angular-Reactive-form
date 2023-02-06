@@ -1,4 +1,5 @@
 export class CustomRegex {
+    public static password = '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$';
     public static onlyText = '[a-zA-Z]*';
     public static username = '^[a-zA-Z ]*$';
     public static email = '^[a-zA-Z0-9._-]+@[a-zA-Z0-9-_.]+\\.[a-zA-Z]{2,100}$';

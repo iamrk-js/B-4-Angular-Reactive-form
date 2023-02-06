@@ -1,29 +1,179 @@
+<h1 class="bg-primary text-white p-4 mb-4">Reactive Form</h1>
 <div class="container">
   <div class="row">
-    <div class="col-sm-6 offset-3">
+    <div class="col-sm-6 ">
       <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
         <div class="form-group">
           <label for="username">Username*</label>
-          <input type="text"  [formControlName]="'username'" id="" class="form-control">
-          <span *ngIf="userNameControl.touched && userNameControl">Username is required</span>
+          <input type="text" minlength="5" [formControlName]="'username'" id="" class="form-control">
+          <ng-container *ngIf="userNameControl?.invalid && userNameControl?.touched">
+            <!-- <span *ngIf="f['username']?.errors?.['required']">Username is required</span> -->
+            <span *ngIf="f['username']?.hasError('required')">Username is required</span>
+            <span *ngIf="f['username']?.errors?.['minlength']">Minimum length should be at least
+              {{userNameControl.errors?.['minlength'].requiredLength}}
+            </span>
+          </ng-container>
+          <ng-container *ngIf="userNameControl?.invalid && userNameControl?.dirty">
+            <span *ngIf="f['username']?.hasError('noSpaceError')">
+              No Space is allowed
+            </span>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <label for="empId">Empl Id*</label>
+          <input type="text" placeholder="E123" [formControlName]="'empId'" id="" class="form-control">
+          <ng-container *ngIf="f['empId']?.touched && f['empId'].invalid">
+            <span *ngIf="f['empId']?.hasError('required')">Empl Id is required field.</span>
+            <span *ngIf="f['empId']?.hasError('invalidEmplId')">
+              {{f['empId'].errors?.['invalidEmplId']}}
+            </span>
+          </ng-container>
+          <ng-container *ngIf="f['empId']?.dirty && f['empId'].invalid">
+            <span *ngIf="f['empId']?.hasError('minlength')">
+              Minimum length should be 4
+            </span>
+            <span *ngIf="f['empId']?.hasError('maxlength')">
+              Maximum length should be 4
+            </span>
+          </ng-container>
         </div>
         <div class="form-group">
           <label for="email">email*</label>
-          <input type="text" formControlName="email"  id="" class="form-control">
+          <input type="text" formControlName="email" id="" class="form-control">
+          <ng-container *ngIf="emailControl?.pending">
+            <div class="spinner-border mt-2" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="signUpForm?.get('email')?.touched && emailControl?.invalid">
+            <span *ngIf="signUpForm?.get('email')?.hasError('required')">Email required field.</span>
+            <!-- <span>Plz enter valid email id</span> -->
+          </ng-container>
+          <ng-container *ngIf="f['email']?.dirty && f['email']?.invalid">
+            <span *ngIf="f['email']?.hasError('emailExistError')">
+              {{f['email'].errors?.['emailExistError']}}
+            </span>
+          </ng-container>
         </div>
         <div class="form-group">
-          <div *ngFor="let genderName of gendersArray">
-            <label [for]="genderName">
-              <input type="radio"  [id]="genderName" [value]="genderName" formControlName="gender"> {{genderName}}
+          <ng-container *ngFor="let genderName of gendersArray">
+            <label [for]="genderName" class="mr-3">
+              <input type="radio" [id]="genderName" [value]="genderName" formControlName="gender"> {{genderName}}
             </label>
+          </ng-container>
+        </div>
+        <div formGroupName="permanentAddress" class="row">
+          <div class="col-sm-12">
+            <p class="m-0 mb-2 font-weight-bold">
+              Permanent Address
+            </p>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="country">Country*</label>
+              <!-- <input type="text" name="" id="country" class="form-control" formControlName="country"> -->
+              <select id="country" class="form-control" formControlName="country">
+                <option value="">Select Country Name</option>
+                <option [value]="countryName" *ngFor="let countryName of countryArray">
+                  {{countryName}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="state">state</label>
+              <input type="text" name="" id="state" class="form-control" formControlName="state">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="city">city</label>
+              <input type="text" name="" id="city" class="form-control" formControlName="city">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="zipcode">zipcode</label>
+              <input type="text" name="" id="zipcode" class="form-control" formControlName="zipcode">
+            </div>
+          </div>
+        </div>
+        <div formArrayName="skills">
+          <div class="row">
+            <div class="col-12">
+              <p>SkillSet</p>
+            </div>
+          </div>
+          <div class="row" *ngFor="let skill of skillsArray?.controls; let i = index">
+            <div class="col-sm-10">
+              <div class="form-group">
+                <!-- <label for="skills">skills</label> -->
+                <input type="text" class="form-control" [formControlName]="i">
+              </div>
+            </div>
+            <div class="col-sm-2" *ngIf="i > 0">
+              <a href="javascript:;" (click)="onSkillRemove(i)">
+                <i class="fa-solid fa-trash fa-2x"></i>
+              </a>
+            </div>
+
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <button class="btn btn-primary" (click)="onAddSkills()">Add More Skills</button>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary" type="submit" >
-            Sign Up
+          <label for="password">password</label>
+          <input type="text" formControlName="password" name="" id="" class="form-control">
+          <ng-container *ngIf="f['password'].invalid && f['password'].touched">
+            <span *ngIf="f['password'].hasError('required')">
+              Password is required field
+            </span>
+            <!-- <span *ngIf="f['password'].errors?.['pattern']">
+                It should contain At least 1 Capital letter , 1 Lowercase letter , 1 number and 1 special char.
+              </span> -->
+            <!-- <span *ngIf="f['password'].hasError('pattern')">
+                It should contain At least 1 Capital letter , 1 Lowercase letter , 1 number and 1 special char.
+              </span> -->
+
+          </ng-container>
+          <ng-container *ngIf="f['password'].dirty && f['password'].invalid">
+            <span *ngIf="f['password'].getError('pattern') !== null">
+              It should contain At least 1 Capital letter , 1 Lowercase letter , 1 number and 1 special char.
+            </span>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <label for="confirmpassword">confirm password</label>
+          <input type="text" formControlName="confirmpassword" name="" id="" class="form-control">
+          <ng-container *ngIf="f['confirmpassword'].touched && f['confirmpassword'].invalid">
+            <span *ngIf="f['confirmpassword'].getError('required') !== null">
+              Confirm password is required.
+            </span>
+          </ng-container>
+          <ng-container *ngIf="f['confirmpassword'].dirty && signUpForm?.errors?.['passwordMissmatch']">
+            <!-- <span *ngIf="f['confirmpassword'].value !== f['password'].value">
+              Password and Confirm password should be same !!!
+            </span> -->
+            <span>
+              {{signUpForm.errors?.['passwordMissmatch']}}
+            </span>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit" [disabled]="signUpForm.invalid"> Sign Up
           </button>
         </div>
       </form>
     </div>
+    <div class="col-sm-6">
+      {{signUpForm.value | json}}
+    </div>
   </div>
 </div>
+
+<app-promise-vs-obs></app-promise-vs-obs>
+<!-- <app-obs></app-obs> -->
